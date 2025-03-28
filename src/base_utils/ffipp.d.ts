@@ -27,8 +27,8 @@ type FFIPPType<I, O> = {
   ): FFIFunc<O, typeof args>;
   symbol: string;
   size: number;
-  serilize: (arg_0: I) => any;
-  deserilize: (arg_0: any) => O;
+  serialize: (arg_0: I) => any;
+  deserialize: (arg_0: any) => O;
 };
 
 type FFIFunc<R, A extends FFIPPType<any, any>[]> = {
@@ -39,8 +39,8 @@ type FFIFunc<R, A extends FFIPPType<any, any>[]> = {
 export function createType<I, O>(a: {
   symbol: string;
   size: number;
-  serilize: (arg_0: I) => any;
-  deserilize: (arg_0: any) => O;
+  serialize: (arg_0: I) => any;
+  deserialize: (arg_0: any) => O;
 }): FFIPPType<I, O>;
 
 export function openLib<T>(
