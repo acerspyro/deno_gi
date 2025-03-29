@@ -11,7 +11,7 @@ import {
 } from "../base_utils/convert.ts";
 import {ExtendedDataView} from "../utils/dataview.js";
 import {boxArray, unboxArray} from "./argument/array.ts";
-import {boxInterface, getInterfaceSize, unboxInterface,} from "./argument/interface.js";
+import {boxInterface, getInterfaceSize, unboxInterface} from "./argument/interface.js";
 import {unboxList} from "./argument/list.js";
 import {ensure_number_range} from "../bindings/ranges.ts";
 import "npm:reflect-metadata";
@@ -23,6 +23,7 @@ function getArgumentSize(type: Deno.PointerObject<unknown>): number | null {
   switch (tag) {
     case GITypeTag.INTERFACE: {
       const info = g.type_info.get_interface(type);
+      if (info === null) return null;
       return getInterfaceSize(info);
     }
     default:
@@ -74,8 +75,7 @@ function initArgument(
  * @returns
  */
 export function initArguments(
-  ...types:
-    ([type: Deno.PointerObject, n_pointers: number] | Deno.PointerObject)[]
+  ...types: ([type: Deno.PointerObject, n_pointers: number] | Deno.PointerObject)[]
 ) {
   const buffer = new ArrayBuffer(types.length * 8);
   const view = new ExtendedDataView(buffer);

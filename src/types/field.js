@@ -4,7 +4,7 @@ import g from "../bindings/mod.js";
 import {ExtendedDataView} from "../utils/dataview.js";
 import {getName} from "../utils/string.ts";
 import {boxArgument, initArguments, unboxArgument} from "./argument.ts";
-import {createCallback} from "./callback.js";
+import {createCallback} from "./callback.ts";
 
 export function handleField(
     target,

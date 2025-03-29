@@ -2,7 +2,7 @@ import {deref_buf, deref_ptr} from "../../base_utils/convert.ts";
 import {GITypeTag} from "../../bindings/enums.ts";
 import g from "../../bindings/mod.ts";
 import {boxArgument, unboxArgument} from "../argument.ts";
-import {TypedArray} from "../../base_utils/ffipp.js";
+import {TypedArray} from "../../base_utils/ffipp.ts";
 
 export function getTypeSize(typeTag: number) {
   switch (typeTag) {
@@ -75,7 +75,7 @@ export function boxArray(
   const paramSize = getTypeSize(paramTypeTag);
 
   const buffer = new ArrayBuffer(
-    (values.length + isZeroTerminated) * paramSize,
+    (values.length + +isZeroTerminated) * paramSize,
   );
 
   for (let i = 0; i < values.length; i++) {

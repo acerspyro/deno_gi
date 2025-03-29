@@ -1,4 +1,4 @@
-import {createType, TypedArray} from "./ffipp.js";
+import {createType, TypedArray} from "./ffipp.ts";
 
 const encoder = new TextEncoder();
 
@@ -27,17 +27,15 @@ export const $string = createType({
   symbol: "buffer",
   size: 8,
   // empty string converts to a pointer to zero value, but null and undefined convert to null pointer.
-  serialize: (value?: string) =>
-    value == null ? null : encoder.encode(value + "\0"),
-  deserialize: (value: Deno.PointerValue) =>
-    value ? Deno.UnsafePointerView.getCString(value) : null,
+  serialize: (value: string | null) => value == null ? null : encoder.encode(value + "\0"),
+  deserialize: (value: Deno.PointerValue) => value ? Deno.UnsafePointerView.getCString(value) : null,
 });
 
-export const $bool = createType({
+export const $bool = createType<boolean, boolean, number, number>({
   symbol: "i32",
   size: 4,
   serialize: (value: boolean) => (value ? 1 : 0),
-  deserialize: (value) => value !== 0,
+  deserialize: (value: number) => value !== 0,
 });
 
 export const $i32 = createType({
@@ -72,7 +70,7 @@ export const $i64 = createType({
   symbol: "i64",
   size: 8,
   serialize: (value: number | bigint) => BigInt(value),
-  deserialize: (value: number | bigint) => BigInt(value),
+  deserialize: (value: unknown) => BigInt(value as number | bigint) as bigint,
 });
 
 export const $u64 = createType({
